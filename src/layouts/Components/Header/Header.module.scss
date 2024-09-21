@@ -1,0 +1,23 @@
+.wrapper {
+    --search-border-radius: 92px;
+    --search-button-width: 52px;
+    --actions-button-width: 110px;
+    --actions-button-height: 36px;
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    height: var(--default-layout-header-height);
+    background-color: var(--white-color);
+    box-shadow: 1px 1px #e0e0e0;
+}
+
+.navbar-item {
+    padding: 0 12px;
+    font-family: 'Oswald';
+    font-size: large;
+    font-weight: bold;
+}

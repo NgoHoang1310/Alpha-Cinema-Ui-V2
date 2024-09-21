@@ -1,0 +1,111 @@
+.wrapper {
+    display: inline-flex;
+    justify-content: center;
+    min-width: 100px;
+    padding: 6px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-wrap: nowrap;
+    font-size: 1.6rem;
+
+    &.disabled {
+        opacity: 0.6;
+        user-select: none;
+        pointer-events: none;
+    }
+
+    + .wrapper {
+        margin-left: 8px;
+    }
+}
+
+.rounded {
+    border-radius: 50px;
+    color: rgba(22, 24, 35, 0.75);
+    background-color: var(--white-color);
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 8px;
+}
+
+.primary {
+    border: 1px solid var(--primary-color);
+    color: var(--white-color) !important;
+    background-color: var(--primary-color);
+
+    &:hover {
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), rgb(254, 44, 85);
+    }
+}
+
+.outline {
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color) !important;
+    background-color: transparent;
+
+    &:hover {
+        background-color: rgba(254, 44, 85, 0.06);
+    }
+}
+
+.simple {
+    border: 1px solid rgba(22, 24, 35, 0.12);
+    color: var(--black-color);
+    background-color: transparent;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgba(22, 24, 35, 0.03);
+    }
+}
+
+.large {
+    width: 100%;
+    padding: 14px 69px;
+    border-radius: 8px;
+    font-size: 1.8rem;
+}
+
+.icon + .title,
+.title + .icon {
+    margin-left: 8px;
+}
+
+.icon {
+    display: inline-block;
+    width: 16px;
+    text-align: center;
+}
+
+//toggle button
+.toggle-container {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    border-radius: 999px;
+    background-color: rgba(22, 24, 35, 0.12);
+    cursor: pointer;
+    transition: all ease-in-out 0.2s;
+}
+
+.toggle-container.toggle {
+    background-color: var(--primary-color);
+}
+
+.node {
+    position: absolute;
+    left: 3%;
+    width: 20px;
+    height: 20px;
+    margin: 2px;
+    border-radius: 50%;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 2px;
+    transition: left ease-in-out 0.2s;
+}
+
+.node.toggle {
+    left: 47%;
+}
+
+.loading {
+}

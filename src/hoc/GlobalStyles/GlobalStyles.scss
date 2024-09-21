@@ -1,0 +1,143 @@
+@import 'normalize.css';
+@import '~bootstrap/scss/bootstrap';
+
+@font-face {
+    font-family: Oswald;
+    font-weight: 400;
+    src: url('/assets/fonts/Oswald-Regular.ttf');
+}
+
+@font-face {
+    font-family: SourceSansPro;
+    font-weight: 600;
+    src: url('/assets/fonts/SourceSansPro-Regular.ttf');
+}
+
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+:root {
+    --default-layout-header-height: 75px;
+    --default-layout-width: 1420px;
+    --side-bar-width: 240px;
+    --primary-color: #2189cb;
+    --blur-color: #b9babd;
+    --black-color: #333;
+    --white-color: #fff;
+    --green-check-color: #20d5ec;
+    --nav-hover-color: rgba(22, 24, 35, 0.03);
+    --boder-blur-color: rgba(22, 24, 35, 0.12);
+    --font-family: 'SourceSansPro';
+}
+
+html {
+    font-size: 62.5%;
+}
+
+//scrollbar
+
+html ::-webkit-scrollbar {
+    width: 8px;
+    border-radius: 0px;
+}
+
+html *::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(22, 24, 35, 0.06);
+}
+
+html *::-webkit-scrollbar-track {
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: 1.6rem;
+    text-rendering: optimizeSpeed;
+
+    * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+    }
+}
+
+button,
+input {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-weight: 600;
+}
+a[href] {
+    color: black;
+    text-decoration: none;
+}
+//loading animation
+.fetch-loading {
+    animation: spinner 1s linear infinite;
+}
+
+//custom tippy tooltip
+
+body {
+    // .container {
+    //     width: 1250px;
+    // }
+
+    .tippy-box {
+        line-height: 21px;
+        padding: 4px 4px;
+        background-color: rgba(84, 84, 84, 0.92);
+        font-size: 1.6rem;
+    }
+
+    .firebase-emulator-warning {
+        display: none;
+    }
+
+    .break-bar {
+        width: 100%;
+        height: 1px;
+        margin: 4px 0;
+        background-color: var(--boder-blur-color);
+    }
+
+    .hashtags {
+        margin-right: 4px;
+        color: rgb(43, 93, 185);
+        font-size: 1.6rem;
+        font-weight: 600;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .users {
+        display: inline-block;
+        padding: 3px 3px 2px;
+        margin: 0 1px;
+        border-radius: 4px;
+        background-color: #eee;
+        vertical-align: baseline;
+        font-size: 0.9em;
+    }
+
+    .line {
+        position: absolute;
+        bottom: 0;
+        width: 100px;
+        height: 2px;
+        background-color: black;
+        transition: all 0.2s ease;
+    }
+
+    .danger-border {
+        border: 1px solid red !important;
+    }
+}

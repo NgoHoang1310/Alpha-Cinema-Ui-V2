@@ -1,0 +1,75 @@
+$animation-duration: 800ms;
+
+$size: 20px;
+
+@mixin set-size($s) {
+    $size: $s;
+    width: $size !important;
+}
+
+.wrapper {
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    .circle {
+        position: relative;
+        display: inline-block;
+        width: $size;
+        margin: 0;
+        border-radius: 50%;
+        mix-blend-mode: lighten;
+        aspect-ratio: 1;
+    }
+
+    .circle:nth-child(1) {
+        background: #fe2c55;
+        animation: clockwise $animation-duration infinite linear;
+    }
+
+    .circle:nth-child(2) {
+        background: #25f4ee;
+        animation: counter-clockwise $animation-duration infinite linear;
+    }
+}
+
+@keyframes clockwise {
+    0% {
+        left: 0;
+    }
+    25% {
+        transform: scale(1.2);
+    }
+    50% {
+        left: $size;
+    }
+    75% {
+        transform: scale(0.8);
+    }
+    100% {
+        left: 0;
+    }
+}
+
+@keyframes counter-clockwise {
+    0% {
+        right: 0;
+    }
+    25% {
+        transform: scale(0.8);
+    }
+    50% {
+        right: $size;
+    }
+    75% {
+        transform: scale(1.2);
+    }
+    100% {
+        right: 0;
+    }
+}
+.small {
+    @include set-size(10px);
+}
