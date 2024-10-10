@@ -1,21 +1,16 @@
-import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-
-import { useStore } from '~/hooks';
-import { actions } from '~/store';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import config from '~/configs';
 
 function AuthGuard({ children }) {
+    const { isAuthenticated } = useSelector((state) => state.auth);
     const navigate = useNavigate();
-    const [state, dispatch] = useStore();
-    const { showModal, isLogin } = state;
     useEffect(() => {
-        if (!isLogin) {
-            dispatch(actions.showModal(showModal));
-            return navigate(config.routes.home);
-        }
-    }, [isLogin]);
+        if (!isAuthenticated) return navigate(config.routes.login);
+    }, []);
+
     return children;
 }
 export default AuthGuard;

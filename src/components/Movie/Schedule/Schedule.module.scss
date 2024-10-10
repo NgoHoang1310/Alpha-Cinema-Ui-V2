@@ -1,0 +1,71 @@
+.schedule-date {
+    font-family: 'Oswald';
+}
+.schedule-date__list {
+    display: flex;
+    flex-wrap: wrap;
+}
+.schedule-date__list--item {
+    width: 12.5%;
+    margin: -4px 0;
+    cursor: pointer;
+    text-align: center;
+    font-size: 1.8rem;
+    span {
+        font-size: 3.8rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .schedule-date__list--item {
+        width: 25%;
+
+        span {
+            font-size: 3rem;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .schedule-date__list--item {
+        width: 33.3333%;
+        span {
+            font-size: 3rem;
+        }
+    }
+}
+
+.smaller {
+    span {
+        font-size: 3rem;
+    }
+}
+
+.schedule-time {
+    font-family: 'Oswald';
+    h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+    }
+}
+
+.time-list {
+    display: flex;
+    margin-top: 14px;
+}
+
+.time-item {
+    padding: 4px 20px;
+    background-color: var(--blur-color-2);
+    cursor: pointer;
+    font-weight: 700;
+
+    &:hover {
+        opacity: 0.8;
+        color: red;
+    }
+}
+
+.time-item + .time-item {
+    margin-left: 16px;
+}

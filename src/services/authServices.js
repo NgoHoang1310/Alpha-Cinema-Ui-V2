@@ -1,6 +1,6 @@
 import * as request from '~/utils';
 
-const handleRegister = async (payload) => {
+const register = async (payload) => {
     try {
         const res = await request.post('/auth/register', payload);
         return res;
@@ -9,7 +9,7 @@ const handleRegister = async (payload) => {
     }
 };
 
-const handleLogin = async (payload) => {
+const login = async (payload) => {
     try {
         const res = await request.post('/auth/login', payload);
         return res;
@@ -18,4 +18,14 @@ const handleLogin = async (payload) => {
     }
 };
 
-export { handleRegister, handleLogin };
+const getMe = async () => {
+    const res = await request.get('/auth/me');
+    return res.data;
+};
+
+const logOut = async (userId) => {
+    const res = await request.destroy(`/auth/users/${userId}/log-out`);
+    return res;
+};
+
+export { register, login, logOut, getMe };

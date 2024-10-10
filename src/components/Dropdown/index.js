@@ -8,9 +8,9 @@ import Menu from '../Popper/Menu';
 import config from '~/configs';
 
 const cx = classNames.bind(styles);
-function Dropdown({ options = ['Hà Nội', 'Thái Bình'] }) {
+function Dropdown({ options = ['Hà Nội', 'Thái Bình'], className }) {
     return (
-        <div className={cx('wrapper')}>
+        <div className={cx('wrapper', className)}>
             <Menu items={config.menus.MENU_ITEMS}>
                 <div className={cx('dropdown')}>
                     {config.menus.MENU_ITEMS[0].title}

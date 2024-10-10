@@ -7,7 +7,7 @@ const request = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL,
 });
 
-const getAccessToken = () => {
+const getToken = () => {
     let token = localStorage.getItem('token');
     return JSON.parse(token);
 };
@@ -49,7 +49,7 @@ export const destroy = async (url, options = {}, configs = { contentType: 'appli
     });
     return res.data;
 };
-
+//* process refreshtoken queue when multiple request failed !
 const processQueue = (error, token = null) => {
     failedQueue.forEach((prom) => {
         if (error) {
@@ -62,9 +62,10 @@ const processQueue = (error, token = null) => {
     failedQueue = [];
 };
 
-const refreshToken = async (payload) => {
+//*
+const refreshToken = async () => {
     try {
-        const res = await request.post('/auth/refresh-token', payload);
+        const res = await request.post('/auth/refresh-token');
         localStorage.setItem('token', JSON.stringify(res.data.data));
         processQueue(null);
         return res.data.data;
@@ -73,13 +74,11 @@ const refreshToken = async (payload) => {
         throw error;
     }
 };
-
+//* handle call refresh token api !
 const getNewToken = async () => {
     if (!isRefreshing) {
         isRefreshing = true;
-        let newToken = await refreshToken({
-            refreshToken: JSON.parse(localStorage.getItem('token'))?.refreshToken,
-        });
+        let newToken = await refreshToken();
         isRefreshing = false;
         return newToken;
     }
@@ -90,16 +89,16 @@ const getNewToken = async () => {
 
 request.interceptors.request.use(
     function (config) {
-        // Any status code that lie within the range of 2xx cause this function to trigger
-        // Do something with config data
-        const token = getAccessToken()?.accessToken;
+        //* Any status code that lie within the range of 2xx cause this function to trigger
+        //Todo: Do something with config data
+        const token = !isRefreshing ? getToken()?.accessToken : getToken()?.refreshToken;
         if (!token) return config;
         config.headers.Authorization = `Bearer ${token}`;
         return config;
     },
     function (error) {
-        // Any status codes that falls outside the range of 2xx cause this function to trigger
-        // Do something with response error
+        //* Any status codes that falls outside the range of 2xx cause this function to trigger
+        //Todo: Do something with response error
         return Promise.reject(error);
     },
 );
@@ -112,23 +111,16 @@ request.interceptors.response.use(
         const config = error?.config;
         if (error?.response?.status === 401 && !config?._retry) {
             config._retry = true;
-            try {
-                let newToken = await getNewToken();
-                config.headers = {
-                    ...config.headers,
-                    Authorization: `Bearer ${newToken?.accessToken}`,
-                };
-                return request(config);
-            } catch (error) {
-                return Promise.reject(error);
-            }
-        }
-        if (error?.response?.status === 403) {
-            localStorage.clear();
+            if (isRefreshing) return Promise.reject(error);
+            let newToken = await getNewToken();
+            config.headers = {
+                ...config.headers,
+                Authorization: `Bearer ${newToken?.accessToken}`,
+            };
+            return request(config);
         }
 
-        // Any status codes that falls outside the range of 2xx cause this function to trigger
-        // Do something with response error
+        //Todo: Do something with response error
         return Promise.reject(error);
     },
 );

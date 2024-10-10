@@ -12,7 +12,6 @@
 //Menu items
 .menu-items {
     width: 230px;
-
     .separate {
         border-top: 1px solid rgba(0, 0, 0, 0.12);
     }
@@ -22,9 +21,8 @@
         width: 100%;
         height: 44.5px;
         padding: 13px 16px;
-        margin-left: 0;
+        margin-left: 0 !important;
         color: #595f65;
-        font-weight: 400;
     }
 }
 

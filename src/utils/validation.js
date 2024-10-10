@@ -4,7 +4,7 @@ import styles from '~/components/Authenticattion/AuthForm.module.scss';
 const cx = classNames.bind(styles);
 
 function Validator(options) {
-    //lấy thẻ cha
+    //* get parents element
     function getParent(element, selector) {
         while (element?.parentElement) {
             if (element.parentElement.matches(selector)) {
@@ -15,7 +15,7 @@ function Validator(options) {
     }
     var getElementForm = document.querySelector(options.form);
     var selectorRules = {};
-    //xử lí báo lỗi
+    //* handle error
     function validate(inputElement, rule) {
         var rules = selectorRules[rule.selector];
         var errorMessage;
@@ -31,7 +31,7 @@ function Validator(options) {
             getMessage.innerText = '';
             getParent(inputElement, options.formGroupSelector).classList.remove(cx('invalid'));
         }
-        //xử lí khi người dùng nhập
+        //* handle when user login
         inputElement.oninput = function () {
             getMessage.innerText = '';
             getParent(inputElement, options.formGroupSelector).classList.remove(cx('invalid'));
@@ -40,7 +40,7 @@ function Validator(options) {
     }
 
     if (getElementForm) {
-        //xử lí nút submit
+        //* handle submit button
         getElementForm.onsubmit = function (e) {
             e.preventDefault();
             var isFormValid = true;
@@ -67,7 +67,7 @@ function Validator(options) {
         };
 
         options.rules.forEach(function (rule) {
-            //xử lí lấy ra tất cả các rule của mỗi trường
+            //* get all rules of environment
             var inputElement = getElementForm.querySelector(rule.selector);
             if (Array.isArray(selectorRules[rule.selector])) {
                 selectorRules[rule.selector].push(rule.test);
@@ -82,7 +82,7 @@ function Validator(options) {
             }
         });
     }
-    //xử lí nút hiện mật khẩu
+    //* handle showing password button
     var showMessage = document.querySelector('.checkbox-btn');
     showMessage.onclick = function () {
         if (!showMessage.checked) {
@@ -95,7 +95,7 @@ function Validator(options) {
     };
 }
 
-//kiểm tra tên
+//* check name
 Validator.isRequire = function (selector, message) {
     return {
         selector: selector,
@@ -105,7 +105,7 @@ Validator.isRequire = function (selector, message) {
     };
 };
 
-//kiểm tra email
+//* check email
 Validator.isEmail = function (selector, message) {
     return {
         selector: selector,
@@ -115,7 +115,7 @@ Validator.isEmail = function (selector, message) {
         },
     };
 };
-//kiểm tra mật khẩu
+//* check password
 Validator.isPassword = function (selector, min, message) {
     return {
         selector: selector,
@@ -129,6 +129,7 @@ Validator.isPhone = function (selector, message) {
     return {
         selector: selector,
         test: function (value) {
+            //* regux check phone number
             var regux = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
             return regux.test(value) ? undefined : message || 'Số điện thoại không hợp lệ';
         },
@@ -139,13 +140,14 @@ Validator.isDob = function (selector, message) {
     return {
         selector: selector,
         test: function (value) {
+            //* regux check date of birth
             var regux = /\d{1,2}\/\d{1,2}\/\d{2,4}/;
             return regux.test(value) ? undefined : message || 'Ngày sinh không hợp lệ';
         },
     };
 };
 
-//kiểm tra xác thực mật khẩu
+//* check password confirmination
 Validator.isConfirm = function (selector, getConfirmValue, message) {
     return {
         selector: selector,

@@ -1,0 +1,42 @@
+.movie-list {
+    margin-top: 46px;
+}
+
+.movie-item {
+    padding: 0 30px;
+    margin-bottom: 78px;
+    border: none !important;
+    background-color: transparent !important;
+}
+
+.movie-item__infor {
+    margin-top: 8px;
+
+    h3 {
+        margin-bottom: 12px;
+        color: var(--primary-color);
+        font-family: 'Oswald';
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    p {
+        overflow: hidden;
+        height: 22px;
+        color: #333333;
+        text-wrap: nowrap;
+        text-overflow: ellipsis;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .buy-button {
+        position: relative;
+        width: 100%;
+        margin-top: 32px;
+        background-image: linear-gradient(to right, #0a64a7 0%, #258dcf 51%, #3db1f3 100%) !important;
+        font-family: 'Oswald';
+    }
+}

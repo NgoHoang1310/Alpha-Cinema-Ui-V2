@@ -1,0 +1,54 @@
+.movie-item__img {
+    position: relative;
+
+    &:hover > .movie-item__overlay {
+        display: block;
+    }
+
+    img {
+        border-radius: 20px;
+    }
+}
+
+.movie-item__overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+    overflow: hidden;
+    border-radius: 20px;
+    opacity: 0.6;
+    background-color: var(--transparent-black-color);
+
+    .icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: block;
+        width: 60px;
+        height: 60px;
+        color: white;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.limit-age-badge {
+    position: absolute;
+    top: 3%;
+    left: 4%;
+    width: 60px;
+    height: 30px;
+    background-repeat: no-repeat;
+}
+
+.hot-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 60px;
+    background-image: url('../../assets/Images/stickers/hot.png');
+    background-repeat: no-repeat;
+}

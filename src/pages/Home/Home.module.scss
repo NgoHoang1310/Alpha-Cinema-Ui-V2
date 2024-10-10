@@ -1,3 +1,19 @@
 .content {
     width: 700px;
 }
+
+// movie
+
+.movie-nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+    font-family: 'Oswald';
+    font-size: clamp(1.5rem, 2vw, 3rem);
+
+    .movie-nav__item {
+        padding: 12px 12px;
+        border-bottom: 1px solid #ccc;
+        cursor: pointer;
+    }
+}

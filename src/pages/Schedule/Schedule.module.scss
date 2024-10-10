@@ -1,0 +1,30 @@
+.schedule-movie__right {
+    font-family: 'Oswald';
+
+    h1 {
+        display: inline-block;
+        color: var(--text-active-color);
+        font-size: 3.3rem;
+
+        &:hover {
+            color: red;
+            text-decoration: underline !important;
+        }
+    }
+
+    p {
+        margin-bottom: 32px;
+        font-family: 'SourceSansPro';
+        font-size: 1.8rem;
+
+        .icon {
+            margin-right: 4px;
+            color: var(--primary-color);
+            font-size: 1.4rem;
+        }
+
+        span {
+            padding-right: 12px;
+        }
+    }
+}

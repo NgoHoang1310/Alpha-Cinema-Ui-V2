@@ -1,0 +1,30 @@
+.wrapper {
+    overflow-y: auto;
+    min-height: 480px;
+}
+
+.seat-row {
+    display: flex;
+}
+
+.seat-item {
+    width: 6.667%;
+    padding: 5px;
+
+    div {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        color: #494c62;
+        background-repeat: no-repeat;
+        background-size: contain;
+        cursor: pointer;
+        text-align: center;
+        font-size: 1.2rem;
+    }
+
+    .selected,
+    .reserved {
+        color: white;
+    }
+}

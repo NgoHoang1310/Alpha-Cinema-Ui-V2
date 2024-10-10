@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight, faUser, faVideo, faCog, faMoon, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 const MENU_ITEMS = [
     {
         icon: <FontAwesomeIcon icon={faChevronRight} />,
@@ -31,4 +31,27 @@ const MENU_ITEMS = [
     },
 ];
 
-export default { MENU_ITEMS };
+const MENU_USERS = [
+    {
+        icon: <FontAwesomeIcon icon={faUser} />,
+        title: 'Xem hồ sơ',
+    },
+    {
+        icon: <FontAwesomeIcon icon={faCog} />,
+        title: 'Cài đặt',
+        to: '/setting',
+    },
+    {
+        icon: <FontAwesomeIcon icon={faMoon} />,
+        title: 'Chế độ tối',
+    },
+    {
+        icon: <FontAwesomeIcon icon={faSignOutAlt} />,
+        title: 'Đăng xuất',
+        to: '/',
+        separate: true,
+        logOut: true,
+    },
+];
+
+export default { MENU_ITEMS, MENU_USERS };

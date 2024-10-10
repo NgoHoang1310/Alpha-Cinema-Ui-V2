@@ -28,7 +28,7 @@ function AuthForm({ type = 'register' }) {
     };
 
     const handleRegister = async (payload) => {
-        const response = await apiServices.handleRegister(payload);
+        const response = await apiServices.register(payload);
         let statusCode = response?.code;
 
         switch (statusCode) {
@@ -52,12 +52,13 @@ function AuthForm({ type = 'register' }) {
     };
 
     const handleLogin = async (payload) => {
-        const response = await apiServices.handleLogin(payload);
+        const response = await apiServices.login(payload);
         let statusCode = response?.code;
 
         switch (statusCode) {
             case 200: {
                 toast('Đăng nhập thành công !');
+                localStorage.setItem('token', JSON.stringify(response.data));
                 setTimeout(() => {
                     window.location.href = '/';
                 }, 800);
