@@ -5,15 +5,14 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Menu from '../Popper/Menu';
-import config from '~/configs';
 
 const cx = classNames.bind(styles);
-function Dropdown({ options = ['Hà Nội', 'Thái Bình'], className }) {
+function Dropdown({ initial, options = [], className, onClick = () => {} }) {
     return (
         <div className={cx('wrapper', className)}>
-            <Menu items={config.menus.MENU_ITEMS}>
+            <Menu items={options} onChange={onClick}>
                 <div className={cx('dropdown')}>
-                    {config.menus.MENU_ITEMS[0].title}
+                    {initial}
                     <FontAwesomeIcon icon={faChevronDown} />
                 </div>
             </Menu>

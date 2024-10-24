@@ -7,6 +7,16 @@
     margin-bottom: 78px;
     border: none !important;
     background-color: transparent !important;
+    animation: fade_in ease-in 0.25s;
+}
+
+@keyframes fade_in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .movie-item__infor {

@@ -1,8 +1,11 @@
 import classNames from 'classnames/bind';
 import styles from './Home.module.scss';
 import Carousel from 'react-bootstrap/Carousel';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+
 import MovieList from '~/components/Movie/MovieList';
-import { useState } from 'react';
+import * as apiServices from '~/services';
 
 const cx = classNames.bind(styles);
 
@@ -13,7 +16,21 @@ const HOME_NAVS = [
 ];
 
 function Home() {
+    const { currentTheater } = useSelector((state) => state.theater);
     const [navType, setNavType] = useState('NS');
+    const [movies, setMovies] = useState([]);
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            const response = await apiServices.getMoviesByStatusAndTheater({
+                status: navType,
+                theater: currentTheater?.theater,
+            });
+            setMovies(response);
+        };
+
+        fetchApi();
+    }, [navType, currentTheater?.theater]);
 
     return (
         <div className={cx('wrapper')}>
@@ -39,9 +56,10 @@ function Home() {
             </Carousel>
             <div className="container">
                 <div className={cx('movie-nav')}>
-                    {HOME_NAVS.map((item) => {
+                    {HOME_NAVS.map((item, index) => {
                         return (
                             <div
+                                key={index}
                                 onClick={() => setNavType(item.type)}
                                 className={cx('movie-nav__item', item.type === navType && 'navbar-active')}
                             >
@@ -50,7 +68,7 @@ function Home() {
                         );
                     })}
                 </div>
-                <MovieList />
+                <MovieList data={movies} />
             </div>
             <div style={{ height: 800 }}></div>
         </div>

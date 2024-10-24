@@ -9,22 +9,22 @@ const images = {
         T18: require('~/assets/Images/stickers/T18.png'),
     },
     seats: {
-        normal: {
-            selected: require('~/assets/Images/seats/seat-select-normal.png'),
-            unselected: require('~/assets/Images/seats/seat-unselect-normal.png'),
-            reserved: require('~/assets/Images/seats/seat-buy-normal.png'),
+        NORMAL: {
+            SELECTED: require('~/assets/Images/seats/seat-select-normal.png'),
+            EMPTY: require('~/assets/Images/seats/seat-unselect-normal.png'),
+            RESERVED: require('~/assets/Images/seats/seat-buy-normal.png'),
         },
 
-        vip: {
-            selected: require('~/assets/Images/seats/seat-select-vip.png'),
-            unselected: require('~/assets/Images/seats/seat-unselect-vip.png'),
-            reserved: require('~/assets/Images/seats/seat-buy-vip.png'),
+        VIP: {
+            SELECTED: require('~/assets/Images/seats/seat-select-vip.png'),
+            EMPTY: require('~/assets/Images/seats/seat-unselect-vip.png'),
+            RESERVED: require('~/assets/Images/seats/seat-buy-vip.png'),
         },
 
-        double: {
-            selected: require('~/assets/Images/seats/seat-select-double.png'),
-            unselected: require('~/assets/Images/seats/seat-unselect-double.png'),
-            reserved: require('~/assets/Images/seats/seat-buy-double.png'),
+        DOUBLE: {
+            SELECTED: require('~/assets/Images/seats/seat-select-double.png'),
+            EMPTY: require('~/assets/Images/seats/seat-unselect-double.png'),
+            RESERVED: require('~/assets/Images/seats/seat-buy-double.png'),
         },
     },
 };

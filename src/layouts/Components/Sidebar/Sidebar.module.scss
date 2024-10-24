@@ -1,0 +1,9 @@
+.wrapper {
+    position: fixed;
+    overflow-x: hidden;
+    overflow-y: overlay;
+    width: var(--side-bar-width);
+    height: 100vh;
+    padding: 20px 10px 26px 10px;
+    background-color: var(--white-color);
+}

@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import styles from './Seat.module.scss';
 
-import { memo, useRef, useState } from 'react';
+import { memo, useState } from 'react';
 
 import images from '~/assets/Images';
 
@@ -18,10 +18,10 @@ function SeatItem({ type, seat, status, price, onClick = defaultFn, className })
     return (
         <div className={className}>
             <div
-                className={cx(currentSeat.status)}
                 style={{
                     backgroundImage: `url(${images.seats[type][currentSeat.status]})`,
-                    lineHeight: type === 'double' && 'initial',
+                    lineHeight: type === 'DOUBLE' && 'initial',
+                    color: currentSeat.status === 'EMPTY' && 'black',
                 }}
                 onClick={() => onClick({ currentSeat, setCurrentSeat })}
             >

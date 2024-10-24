@@ -17,18 +17,6 @@ const MENU_ITEMS = [
             ],
         },
     },
-    {
-        icon: <FontAwesomeIcon icon={faChevronRight} />,
-        title: 'Thái Nguyên',
-        children: {
-            data: [
-                {
-                    code: 'en',
-                    title: 'Beta Thái Nguyên',
-                },
-            ],
-        },
-    },
 ];
 
 const MENU_USERS = [

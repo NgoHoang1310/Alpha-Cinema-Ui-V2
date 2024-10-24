@@ -1,29 +1,40 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { AuthGuard } from './hoc/Guard';
 import { privateRoutes, publicRoutes } from './routes';
 import { DefaultLayout } from './layouts';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useCallback } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 
-import { Modal, ModalBody } from 'reactstrap';
+import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import Toast from '~/components/Toast';
 import Trailer from '~/components/Trailer';
-import { openModal } from '~/store/reducers/modalReducer';
-import { ScheduleDate, ScheduleTime } from '~/components/Movie/Schedule';
+import { openModal, closeModal } from '~/store/reducers/modalReducer';
+import { useCookie } from './hooks';
 import Button from '~/components/Button';
+import { CloseIcon } from './components/Icons';
 import config from '~/configs';
+import Schedule from './components/Modal';
 
 function App() {
-    const { type, isOpenModal, data } = useSelector((state) => state.modal);
+    const { booking, trailer } = useSelector((state) => state.modal);
     const { isAuthenticated } = useSelector((state) => state.auth);
+    const { currentTheater } = useSelector((state) => state.theater);
+    const { updateCookie } = useCookie('currentSchedule');
 
     const dispatch = useDispatch();
 
     const handleSubmit = useCallback(() => {
+        console.log(booking);
+
         if (!isAuthenticated) return (window.location.href = config.routes.login);
-    }, []);
+        updateCookie(booking);
+        window.location.href = config.routes.seatSelection;
+    }, [booking?.movie]);
+
     function renderRoute(route, index, isPrivate = false) {
         let Layout = route.layout ?? (route.layout === null ? Fragment : DefaultLayout);
         let Page = route.component;
@@ -68,24 +79,37 @@ function App() {
                 <Modal
                     centered
                     style={{ maxWidth: 700 }}
-                    isOpen={type === 'trailer' && isOpenModal}
-                    toggle={() => dispatch(openModal(false))}
+                    isOpen={Object.keys(trailer).length > 0}
+                    toggle={() => dispatch(closeModal('trailer'))}
                 >
+                    <ModalHeader className="d-fles justify-content-end">
+                        <Button
+                            onClick={() => {
+                                dispatch(closeModal('trailer'));
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faWindowClose} />
+                        </Button>
+                    </ModalHeader>
                     <ModalBody style={{ padding: 24 }}>
-                        <h1 className="modal-heading">TRAILER - {data?.title} </h1>
-                        <Trailer style={{ padding: 15 }} link={data?.link} />
+                        <h1 className="modal-heading">TRAILER - {trailer?.title} </h1>
+                        <Trailer style={{ padding: 15 }} link={trailer?.link} />
                     </ModalBody>
                 </Modal>
-                <Modal
-                    centered
-                    style={{ maxWidth: 700 }}
-                    isOpen={type === 'booking' && isOpenModal}
-                    toggle={() => dispatch(openModal(false))}
-                >
+                <Modal centered style={{ maxWidth: 700 }} isOpen={Object.keys(booking).length > 0}>
+                    <ModalHeader className="d-fles justify-content-end">
+                        <Button
+                            onClick={() => {
+                                dispatch(closeModal('booking'));
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faWindowClose} />
+                        </Button>
+                    </ModalHeader>
                     <ModalBody style={{ padding: 24 }}>
                         <h1 className="modal-heading">BẠN ĐANG ĐẶT VÉ XEM PHIM </h1>
                         <h2 className="modal-heading text-active" style={{ fontSize: '3.3rem', textAlign: 'center' }}>
-                            Kumanthong
+                            {booking?.movie?.title}
                         </h2>
                         <table>
                             <tbody>
@@ -103,7 +127,7 @@ function App() {
                                             padding: '16px 0',
                                         }}
                                     >
-                                        Beta Thanh Xuân
+                                        {currentTheater.theater}
                                     </th>
                                     <th
                                         style={{
@@ -113,7 +137,7 @@ function App() {
                                             padding: '16px 0',
                                         }}
                                     >
-                                        06/10/2024
+                                        {booking?.date}
                                     </th>
                                     <th
                                         style={{
@@ -123,7 +147,7 @@ function App() {
                                             padding: '16px 0',
                                         }}
                                     >
-                                        18:45
+                                        {booking?.time}
                                     </th>
                                 </tr>
                             </tbody>
@@ -136,21 +160,7 @@ function App() {
                         </div>
                     </ModalBody>
                 </Modal>
-                <Modal
-                    centered
-                    style={{ maxWidth: 900 }}
-                    isOpen={type === 'schedule' && isOpenModal}
-                    toggle={() => dispatch(openModal(false))}
-                >
-                    <ModalBody style={{ padding: 24, minHeight: 350 }}>
-                        <h1 style={{ textAlign: 'center' }} className="modal-heading">
-                            RẠP BETA THÁI NGUYÊN{' '}
-                        </h1>
-                        <ScheduleDate />
-                        <div style={{ marginBottom: 24 }} className="break-bar"></div>
-                        <ScheduleTime />
-                    </ModalBody>
-                </Modal>
+                <Schedule />
             </div>
         </Router>
     );

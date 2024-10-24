@@ -20,50 +20,65 @@ import { useEffect, useRef, useState, memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { setCurrentSeats } from '~/store/reducers/bookingReducer';
 import { formatCurrency } from '~/utils/common';
-import { useCountdown, useSessionStorage } from '~/hooks';
+import { useCountdown, useCookie } from '~/hooks';
 import config from '~/configs';
 
+import * as apiServices from '~/services';
+
 const SEATS = [
-    { row: 'A', number: 1, type: 'normal', status: 'unselected', price: '55000' },
-    { row: 'A', number: 2, type: 'normal', status: 'unselected', price: '55000' },
-    { row: 'A', number: 3, type: 'normal', status: 'reserved', price: '55000' },
-    { row: 'A', number: 4, type: 'normal', status: 'reserved', price: '55000' },
-    { row: 'A', number: 5, type: 'normal', status: 'reserved', price: '55000' },
-    { row: 'A', number: 6, type: 'normal', status: 'unselected', price: '55000' },
-    { row: 'A', number: 7, type: 'normal', status: 'unselected', price: '55000' },
+    { row: 'A', number: 1, type: { type: 'NORMAL' }, status: 'EMPTY', price: '55000' },
+    { row: 'A', number: 2, type: { type: 'NORMAL' }, status: 'EMPTY', price: '55000' },
+    { row: 'A', number: 3, type: { type: 'NORMAL' }, status: 'RESERVED', price: '55000' },
+    { row: 'A', number: 4, type: { type: 'NORMAL' }, status: 'RESERVED', price: '55000' },
+    { row: 'A', number: 5, type: { type: 'NORMAL' }, status: 'RESERVED', price: '55000' },
+    { row: 'A', number: 6, type: { type: 'NORMAL' }, status: 'EMPTY', price: '55000' },
+    { row: 'A', number: 7, type: { type: 'NORMAL' }, status: 'EMPTY', price: '55000' },
 
-    { row: 'B', number: 1, type: 'vip', status: 'unselected', price: '60000' },
-    { row: 'B', number: 2, type: 'vip', status: 'unselected', price: '60000' },
-    { row: 'B', number: 3, type: 'vip', status: 'unselected', price: '60000' },
-    { row: 'B', number: 4, type: 'vip', status: 'unselected', price: '60000' },
-    { row: 'B', number: 5, type: 'vip', status: 'unselected', price: '60000' },
-    { row: 'B', number: 6, type: 'vip', status: 'unselected', price: '60000' },
-    { row: 'B', number: 7, type: 'vip', status: 'unselected', price: '60000' },
+    { row: 'B', number: 1, type: { type: 'VIP' }, status: 'EMPTY', price: '60000' },
+    { row: 'B', number: 2, type: { type: 'VIP' }, status: 'EMPTY', price: '60000' },
+    { row: 'B', number: 3, type: { type: 'VIP' }, status: 'EMPTY', price: '60000' },
+    { row: 'B', number: 4, type: { type: 'VIP' }, status: 'EMPTY', price: '60000' },
+    { row: 'B', number: 5, type: { type: 'VIP' }, status: 'EMPTY', price: '60000' },
+    { row: 'B', number: 6, type: { type: 'VIP' }, status: 'EMPTY', price: '60000' },
+    { row: 'B', number: 7, type: { type: 'VIP' }, status: 'EMPTY', price: '60000' },
 
-    { row: 'C', number: 1, type: 'double', status: 'unselected', price: '65000' },
-    { row: 'C', number: 2, type: 'double', status: 'unselected', price: '65000' },
-    { row: 'C', number: 3, type: 'double', status: 'unselected', price: '65000' },
-    { row: 'C', number: 4, type: 'double', status: 'reserved', price: '65000' },
-    { row: 'C', number: 5, type: 'double', status: 'unselected', price: '65000' },
-    { row: 'C', number: 6, type: 'double', status: 'unselected', price: '65000' },
-    { row: 'C', number: 7, type: 'double', status: 'reserved', price: '65000' },
-    { row: 'C', number: 8, type: 'double', status: 'reserved', price: '65000' },
-    { row: 'C', number: 9, type: 'double', status: 'reserved', price: '65000' },
+    { row: 'C', number: 1, type: { type: 'DOUBLE' }, status: 'EMPTY', price: '65000' },
+    { row: 'C', number: 2, type: { type: 'DOUBLE' }, status: 'EMPTY', price: '65000' },
+    { row: 'C', number: 3, type: { type: 'DOUBLE' }, status: 'EMPTY', price: '65000' },
+    { row: 'C', number: 4, type: { type: 'DOUBLE' }, status: 'RESERVED', price: '65000' },
+    { row: 'C', number: 5, type: { type: 'DOUBLE' }, status: 'EMPTY', price: '65000' },
+    { row: 'C', number: 6, type: { type: 'DOUBLE' }, status: 'EMPTY', price: '65000' },
+    { row: 'C', number: 7, type: { type: 'DOUBLE' }, status: 'RESERVED', price: '65000' },
+    { row: 'C', number: 8, type: { type: 'DOUBLE' }, status: 'RESERVED', price: '65000' },
+    { row: 'C', number: 9, type: { type: 'DOUBLE' }, status: 'RESERVED', price: '65000' },
 ];
 
 const ROWS = ['A', 'B', 'C', 'D', 'E', 'H'];
-const MAX_TIME = 1;
+const MAX_TIME = 10;
 
 const cx = classNames.bind(styles);
 function SeatSelection() {
     const { currentSeats } = useSelector((state) => state.booking);
-    const dispatch = useDispatch();
-    const { minutes, seconds } = useCountdown(MAX_TIME, () => {
-        dispatch(setCurrentSeats([]));
-        window.location.href = config.routes.home;
-    });
+    const { cookie, updateCookie } = useCookie('currentSchedule');
     const [seatsProfile, setSeatsProfile] = useState({});
     const [totalMoney, setTotalMoney] = useState(0);
+    const [seats, setSeats] = useState([]);
+    const dispatch = useDispatch();
+
+    const { minutes, seconds } = useCountdown(MAX_TIME, () => {
+        dispatch(setCurrentSeats([]));
+        updateCookie({});
+        window.location.href = config.routes.home;
+    });
+
+    useEffect(() => {
+        if (!cookie) return (window.location.href = config.routes.home);
+        const fetchApi = async () => {
+            const res = await apiServices.getSeatsByRoom(cookie?.room?.id);
+            setSeats(res);
+        };
+        fetchApi();
+    }, []);
 
     useEffect(() => {
         if (currentSeats.length === 0) {
@@ -101,30 +116,30 @@ function SeatSelection() {
                     <div className={cx('seat-selection')}>
                         <h1>
                             <Link to={'/'}>Trang chủ</Link> <FontAwesomeIcon icon={faCaretRight} /> Đặt vé{' '}
-                            <FontAwesomeIcon icon={faCaretRight} /> <span>Tên phim</span>
+                            <FontAwesomeIcon icon={faCaretRight} /> <span>{cookie?.movie?.title}</span>
                         </h1>
                         <div className="row mt-5">
                             <div className="col-lg-3">
                                 <div className={cx('seat-type')}>
-                                    <img width={'20%'} src={images.seats.normal.unselected}></img>
+                                    <img width={'20%'} src={images.seats.NORMAL.EMPTY}></img>
                                     <p>Ghế trống</p>
                                 </div>
                             </div>
                             <div className="col-lg-3">
                                 <div className={cx('seat-type')}>
-                                    <img width={'20%'} src={images.seats.normal.selected}></img>
+                                    <img width={'20%'} src={images.seats.NORMAL.selected}></img>
                                     <p>Ghế đang chọn</p>
                                 </div>
                             </div>
                             <div className="col-lg-3">
                                 <div className={cx('seat-type')}>
-                                    <img width={'20%'} src={images.seats.normal.unselected}></img>
+                                    <img width={'20%'} src={images.seats.NORMAL.EMPTY}></img>
                                     <p>Ghế đang giữ</p>
                                 </div>
                             </div>
                             <div className="col-lg-3">
                                 <div className={cx('seat-type')}>
-                                    <img width={'20%'} src={images.seats.normal.reserved}></img>
+                                    <img width={'20%'} src={images.seats.NORMAL.RESERVED}></img>
                                     <p>Ghế đã đặt</p>
                                 </div>
                             </div>
@@ -133,22 +148,22 @@ function SeatSelection() {
                             <div className={cx('screen-image')}></div>
                         </div>
                         <div className={cx('seat-selection__area')}>
-                            <SeatArea rows={ROWS} seats={SEATS} />
+                            <SeatArea rows={ROWS} seats={seats} />
                         </div>
                         <div className={cx('seat-selection__guidence')}>
                             <div className="row">
                                 <div className="col-lg-2">
                                     <div className={cx('seat-selection__guidence--item')}>
                                         <div className="row">
-                                            <img src={images.seats.normal.unselected} className="col-lg-6"></img>
+                                            <img src={images.seats.NORMAL.EMPTY} className="col-lg-6"></img>
                                             <p className="col-lg-6 ">Ghế Thường</p>
                                         </div>
                                     </div>
                                     <p className="text-end mt-3">
-                                        {seatsProfile?.normal?.quantity > 0 &&
-                                            seatsProfile?.normal?.quantity +
+                                        {seatsProfile?.NORMAL?.quantity > 0 &&
+                                            seatsProfile?.NORMAL?.quantity +
                                                 ' x ' +
-                                                formatCurrency(seatsProfile?.normal?.price, 'vi-VN', {
+                                                formatCurrency(seatsProfile?.NORMAL?.price, 'vi-VN', {
                                                     style: 'currency',
                                                     currency: 'VND',
                                                 })}
@@ -157,15 +172,15 @@ function SeatSelection() {
                                 <div className="col-lg-2">
                                     <div className={cx('seat-selection__guidence--item')}>
                                         <div className="row">
-                                            <img src={images.seats.vip.unselected} className="col-lg-6"></img>
+                                            <img src={images.seats.VIP.EMPTY} className="col-lg-6"></img>
                                             <p className="col-lg-3">Ghế Vip</p>
                                         </div>
                                     </div>
                                     <p className="text-end mt-3">
-                                        {seatsProfile?.vip?.quantity > 0 &&
-                                            seatsProfile?.vip?.quantity +
+                                        {seatsProfile?.VIP?.quantity > 0 &&
+                                            seatsProfile?.VIP?.quantity +
                                                 ' x ' +
-                                                formatCurrency(seatsProfile?.vip?.price, 'vi-VN', {
+                                                formatCurrency(seatsProfile?.VIP?.price, 'vi-VN', {
                                                     style: 'currency',
                                                     currency: 'VND',
                                                 })}
@@ -174,15 +189,15 @@ function SeatSelection() {
                                 <div className="col-lg-2">
                                     <div className={cx('seat-selection__guidence--item')}>
                                         <div className="row">
-                                            <img src={images.seats.double.unselected} className="col-lg-6"></img>
+                                            <img src={images.seats.DOUBLE.EMPTY} className="col-lg-6"></img>
                                             <p className="col-lg-3">Ghế Đôi</p>
                                         </div>
                                     </div>
                                     <p className="text-end mt-3">
-                                        {seatsProfile?.double?.quantity > 0 &&
-                                            seatsProfile?.double?.quantity +
+                                        {seatsProfile?.DOUBLE?.quantity > 0 &&
+                                            seatsProfile?.DOUBLE?.quantity +
                                                 ' x ' +
-                                                formatCurrency(seatsProfile?.double?.price, 'vi-VN', {
+                                                formatCurrency(seatsProfile?.DOUBLE?.price, 'vi-VN', {
                                                     style: 'currency',
                                                     currency: 'VND',
                                                 })}
@@ -211,15 +226,12 @@ function SeatSelection() {
                     <div className={cx('movie-information')}>
                         <div className="row">
                             <div className="col-lg-5">
-                                <img
-                                    width={'100%'}
-                                    src="https://files.betacorp.vn/media/images/2024/09/24/b-n-sao-c-a-m-om-m-payoff-poster-kthuoc-facebook-154037-240924-43.jpg"
-                                ></img>
+                                <img width={'100%'} src={cookie?.movie?.thumbPath}></img>
                             </div>
                             <div className="col-lg-7 ">
-                                <h2 className="title-active mt-5 fs-1">Mộ Đom Đóm</h2>
+                                <h2 className="title-active mt-5 fs-1">{cookie?.movie?.title}</h2>
                                 <p style={{ fontFamily: 'Oswald' }} className="mt-3 fs-3 fw-bold ">
-                                    2D Phụ đề
+                                    {cookie?.room?.type['type']}
                                 </p>
                             </div>
                         </div>
@@ -232,7 +244,7 @@ function SeatSelection() {
                             </div>
                             <div className="col-lg-6 ">
                                 <div className={cx('movie-information__item')}>
-                                    <p>Hoạt hình, Kịch</p>
+                                    <p>{cookie?.movie?.category?.join(', ')}</p>
                                 </div>
                             </div>
                         </div>
@@ -245,7 +257,7 @@ function SeatSelection() {
                             </div>
                             <div className="col-lg-6 ">
                                 <div className={cx('movie-information__item')}>
-                                    <p>89 phút</p>
+                                    <p>{cookie?.movie?.duration} phút</p>
                                 </div>
                             </div>
                         </div>
@@ -259,7 +271,7 @@ function SeatSelection() {
                             </div>
                             <div className="col-lg-6 ">
                                 <div className={cx('movie-information__item')}>
-                                    <p>Beta Thái Nguyên</p>
+                                    <p>{cookie?.room?.theater?.district}</p>
                                 </div>
                             </div>
                         </div>
@@ -272,7 +284,7 @@ function SeatSelection() {
                             </div>
                             <div className="col-lg-6 ">
                                 <div className={cx('movie-information__item')}>
-                                    <p>07/10/2024</p>
+                                    <p>{cookie?.date}</p>
                                 </div>
                             </div>
                         </div>
@@ -285,7 +297,7 @@ function SeatSelection() {
                             </div>
                             <div className="col-lg-6 ">
                                 <div className={cx('movie-information__item')}>
-                                    <p>13:10</p>
+                                    <p>{cookie?.time}</p>
                                 </div>
                             </div>
                         </div>
@@ -298,7 +310,7 @@ function SeatSelection() {
                             </div>
                             <div className="col-lg-6 ">
                                 <div className={cx('movie-information__item')}>
-                                    <p>P2</p>
+                                    <p>{cookie?.room?.name}</p>
                                 </div>
                             </div>
                         </div>

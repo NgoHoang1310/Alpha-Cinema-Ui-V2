@@ -10,6 +10,12 @@ const routes = {
     register: '/register',
     movieDetail: '/movie-detail/:movieId',
     seatSelection: '/seat-selection',
+
+    //admin
+    admin: {
+        dashBoard: '/admin/dash-board',
+        user: '/admin/users',
+    },
 };
 
 export default routes;

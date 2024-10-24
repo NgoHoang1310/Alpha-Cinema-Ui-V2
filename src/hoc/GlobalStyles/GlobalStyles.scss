@@ -21,7 +21,7 @@
     --default-layout-header-height: 75px;
     --default-layout-width: 1420px;
     --side-bar-width: 240px;
-    --primary-color: #2189cb;
+    --primary-color: #1877f2;
     --primary-color-gradient: linear-gradient(to right, #0a64a7 0%, #258dcf 51%, #3db1f3 100%);
     --blur-color: #b9babd;
     --blur-color-2: #e5e5e5;
@@ -189,5 +189,21 @@ body {
             background-color: #0e599d;
             content: '';
         }
+    }
+
+    .badge {
+        padding: 6px;
+        border-radius: 5px;
+        font-weight: 700;
+    }
+
+    .badge.badge--success {
+        background-color: #e1f6e6;
+        color: #0f8d57;
+    }
+
+    .badge.badge--danger {
+        background-color: #ffe5df;
+        color: #b71d19;
     }
 }

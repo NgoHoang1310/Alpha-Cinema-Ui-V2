@@ -24,6 +24,10 @@ function AuthProvider({ children }) {
                     dispatch(logOut());
                     toast('Phiên đăng nhập hết hạn !');
                 }
+
+                if (error?.response?.status === 500) {
+                    dispatch(logOut());
+                }
             }
         })();
     }, []);

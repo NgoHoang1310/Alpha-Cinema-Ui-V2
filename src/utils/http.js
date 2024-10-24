@@ -50,7 +50,7 @@ export const destroy = async (url, options = {}, configs = { contentType: 'appli
     return res.data;
 };
 //* process refreshtoken queue when multiple request failed !
-const processQueue = (error, token = null) => {
+const processQueue = (error) => {
     failedQueue.forEach((prom) => {
         if (error) {
             prom.reject(error);

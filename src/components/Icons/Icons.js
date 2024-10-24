@@ -581,6 +581,14 @@ function LightHeartIcon({ width = '2.2rem', height = '2.2rem', className }) {
     );
 }
 
+function CloseIcon({ width = '2.2rem', height = '2.2rem', className }) {
+    return (
+        <svg viewBox="0 0 32 32">
+            <path d="M10,10 L22,22 M22,10 L10,22"></path>
+        </svg>
+    );
+}
+
 export {
     Message,
     BoxMessage,
@@ -612,4 +620,5 @@ export {
     LockIcon,
     TiktokLoadingIcon,
     LightHeartIcon,
+    CloseIcon,
 };

@@ -1,7 +1,7 @@
 .wrapper {
     display: inline-flex;
     justify-content: center;
-    min-width: 100px;
+    min-width: 50px;
     padding: 6px 16px;
     border-radius: 4px;
     cursor: pointer;
@@ -106,6 +106,33 @@
 
 .node.toggle {
     left: 47%;
+}
+
+.warn {
+    color: #f49d3a;
+    background-color: #fbe2c5;
+
+    &:hover {
+        color: black;
+    }
+}
+
+.success {
+    color: #003c00;
+    background-color: #9df99d;
+
+    &:hover {
+        color: white;
+    }
+}
+
+.danger {
+    color: red;
+    background-color: #efcaca;
+
+    &:hover {
+        color: white;
+    }
 }
 
 .loading {

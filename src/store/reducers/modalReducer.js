@@ -3,9 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // Initial state
 const initialState = {
-    type: 'trailer',
-    isOpenModal: false,
-    data: {},
+    booking: {},
+    trailer: {},
+    schedule: {},
+
+    modifyUser: {},
 };
 
 // Tạo slice
@@ -16,16 +18,21 @@ const slice = createSlice({
         openModal: (state, action) => {
             return {
                 ...state,
-                type: action.payload?.type,
-                isOpenModal: action.payload?.isOpen,
-                data: action.payload?.data,
+                [action.payload?.type]: action.payload?.data,
+            };
+        },
+
+        closeModal: (state, action) => {
+            return {
+                ...state,
+                [action.payload]: {},
             };
         },
     },
 });
 
 // Export actions
-export const { openModal } = slice.actions;
+export const { openModal, closeModal } = slice.actions;
 
 // Export reducer
 export default slice.reducer;

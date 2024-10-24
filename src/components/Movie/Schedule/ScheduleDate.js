@@ -18,23 +18,23 @@ const MOCK_SCHEDULE_DAYS = [
 
 const DAYS = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
 const cx = classNames.bind(styles);
-function ScheduleDate() {
-    const [dayIndex, setDayIndex] = useState(0);
-
+function ScheduleDate({ days = [], currentDay, onDay }) {
     return (
         <div className={cx('schedule-date')}>
             <ul className={cx('schedule-date__list')}>
-                {MOCK_SCHEDULE_DAYS.map((day, index) => {
+                {days.map((day, index) => {
                     let date = new Date(day);
                     return (
                         <li
                             key={index}
                             className={cx(
                                 'schedule-date__list--item',
-                                index > 7 && 'smaller',
-                                index === dayIndex && 'navbar-active',
+                                days.indexOf(currentDay) > 7 && 'smaller',
+                                currentDay === day && 'navbar-active',
                             )}
-                            onClick={() => setDayIndex(index)}
+                            onClick={() => {
+                                onDay(day);
+                            }}
                         >
                             <span>{date.getDate()}</span>/{date.getMonth() + 1} - {DAYS[date.getDay()]}
                         </li>

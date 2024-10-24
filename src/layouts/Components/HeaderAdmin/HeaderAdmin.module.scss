@@ -1,0 +1,10 @@
+.wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: flex-end;
+    height: var(--default-layout-header-height);
+    padding: 30px;
+}

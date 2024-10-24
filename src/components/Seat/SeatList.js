@@ -12,17 +12,17 @@ function SeatList({ rows = [], seats = [] }) {
 
     const handleClickOnSeat = useCallback((object) => {
         switch (object?.currentSeat.status) {
-            case 'selected': {
+            case 'SELECTED': {
                 const index = seatsSelected.findIndex((item) => item.seat === object?.currentSeat?.seat);
                 if (index !== -1) {
                     seatsSelected.splice(index, 1);
                 }
-                object?.setCurrentSeat({ ...object?.currentSeat, status: 'unselected' });
+                object?.setCurrentSeat({ ...object?.currentSeat, status: 'EMPTY' });
                 break;
             }
-            case 'unselected': {
+            case 'EMPTY': {
                 seatsSelected.push({ ...object?.currentSeat, seat: object?.currentSeat?.seat });
-                object?.setCurrentSeat({ ...object?.currentSeat, status: 'selected' });
+                object?.setCurrentSeat({ ...object?.currentSeat, status: 'SELECTED' });
                 break;
             }
 
@@ -39,14 +39,15 @@ function SeatList({ rows = [], seats = [] }) {
                     <div key={index} className={cx('seat-row')}>
                         {seats.map((seat) => {
                             return (
-                                seat?.row === row && (
+                                seat?.seat === row && (
                                     <SeatItem
+                                        key={seat?.id}
                                         className={cx('seat-item')}
                                         onClick={handleClickOnSeat}
-                                        seat={seat?.row + seat?.number}
-                                        type={seat?.type}
+                                        seat={seat?.seat + seat?.number}
+                                        type={seat['type']?.type}
                                         status={seat?.status}
-                                        price={seat?.price}
+                                        price={seat['type']?.price}
                                     />
                                 )
                             );
